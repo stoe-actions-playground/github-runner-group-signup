@@ -22,7 +22,7 @@ jobs:
           private_key: ${{ secrets.DEMO_APP_PEM }}
 
       - name: Get Repository ID
-        run: gh api /repos/${{ github.event.inputs.repository }} | jq -r '.id'
+        run: |
           echo "REPO_ID=$(gh api /repos/${{ github.event.inputs.repository }} | jq -r '.id')" >> $GITHUB_ENV
         id: get_repo_id
         env:
