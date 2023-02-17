@@ -12,10 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get Repository ID
-        run: gh api /repos/${{ github.event.inputs.repository }} | jq -r '.id'
-          echo "REPO_ID=$(gh api /repos/${{ github.event.inputs.repository }} | jq -r '.id')" >> $GITHUB_ENV
-        id: get_repo_id
 
       # using https://github.com/marketplace/actions/github-app-token
       - name: Generate token
@@ -25,9 +21,16 @@ jobs:
           app_id: ${{ vars.DEMO_APP_ID }}
           private_key: ${{ secrets.DEMO_APP_PEM }}
 
+      - name: Get Repository ID
+        run: gh api /repos/${{ github.event.inputs.repository }} | jq -r '.id'
+          echo "REPO_ID=$(gh api /repos/${{ github.event.inputs.repository }} | jq -r '.id')" >> $GITHUB_ENV
+        id: get_repo_id
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+
       - name: Register repository
         run: |
           gh api /orgs/${{ github.repository_owner }}/actions/runner-groups/8/repositories/${{ env.REPO_ID }} -X PUT
         env:
-          REPO_ID: ${{ steps.get_repo_id.outputs.stdout }}
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          REPO_ID: ${{ env.REPO_ID }}
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
