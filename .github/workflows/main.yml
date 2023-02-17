@@ -1,0 +1,7 @@
+name: GitHub Runner Group Repository Registration
+
+on:
+	workflow_dispatch:
+		inputs:
+			repository:
+				
