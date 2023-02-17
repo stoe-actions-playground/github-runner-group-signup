@@ -10,9 +10,9 @@ on:
 jobs:
   register:
     runs-on: ubuntu-latest
+    environment: 'runner-registration'
 
     steps:
-
       # using https://github.com/marketplace/actions/github-app-token
       - name: Generate token
         id: generate_token
