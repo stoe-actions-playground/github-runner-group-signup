@@ -23,7 +23,7 @@ jobs:
 
       - name: Get Repository ID
         run: |
-          echo "REPO_ID=$(gh api /repos/${{ github.event.inputs.repository }} | jq -r '.id')" >> $GITHUB_ENV
+          echo "REPO_ID=$(gh api /repos/stoe-demo/${{ github.event.inputs.repository }} | jq -r '.id')" >> $GITHUB_ENV
         id: get_repo_id
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
